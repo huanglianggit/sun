@@ -1,0 +1,31 @@
+@media (device-width: 375px) and (device-height: 812px) and (-webkit-min-device-pixel-ratio: 3) {
+    /* 四个Tab导航栏 */
+    #tabBar {
+        height: 1.4rem;
+      }
+    .mainPage{
+        /* padding-bottom: 0.22rem; */
+    }
+    /* tab显示时的底部padding */
+    .tab-show-wrapper{
+        padding-bottom: 1.4rem !important; 
+    }
+    /* 商品详情的购买按钮 */
+    .fixBtnWapper{
+        /* bottom: 0.3rem !important; */
+        padding-bottom: 0.3rem;
+        height: auto;
+        /* bottom: 0.22rem !important; */
+    }
+    /* 银行卡管理，地址保存修改 */
+    .fixBtn{
+        bottom: 0.36rem !important;
+    }
+    /* o2o部分去买单按钮 */
+    .footBtn{
+        padding: 0.3rem !important;
+    }
+    /* 如果以后出现375*812,非ios机型，可以加上下面语句  */
+    @supports (bottom: constant(safe-area-inset-bottom)) {
+    }
+  }

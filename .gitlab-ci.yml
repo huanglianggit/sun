@@ -1,0 +1,45 @@
+stages:
+  - deploy
+variables:
+  dev_path: "/usr/share/nginx/ivy_dev_wechat"
+  playbook_path: "/etc/ansible/playbooks/comm_deploy.yml"
+  release_host_list: "release_wechat_servers"
+  master_host_list: "product_wechat_servers"
+  main_dir: "/data/wwwroot/wechat"
+  dir_owner: "www"
+  dir_group: "www"
+  is_reload: "false"
+  tgzfile_path: "/tmp/wechat.tar.gz"
+  softlink_path: "/data/wwwroot/ivy_wechat"
+
+deploy:
+  stage: deploy
+  script:
+    - sudo cp -r * $dev_path
+    - sudo chown nginx:nginx -R $dev_path
+  only:
+    - dev
+  tags:
+    - dev_runner_wechat
+
+deploy_pre:
+  stage: deploy
+  script:
+    - sudo /usr/bin/tar cfz $tgzfile_path ./*
+    - sudo /usr/local/bin/ansible-playbook $playbook_path --extra-vars "host_list=$release_host_list main_dir=$main_dir dir_owner=$dir_owner dir_group=$dir_group is_reload=$is_reload build_id=`echo ${CI_COMMIT_SHA:0:8}` tgzfile_path=$tgzfile_path softlink_path=$softlink_path"
+  only:
+    - release
+  when: manual
+  tags:
+    - pre_runner_wechat
+
+product_deploy:
+  stage: deploy
+  script:
+    - sudo /usr/bin/tar cfz $tgzfile_path ./*
+    - sudo /usr/local/bin/ansible-playbook $playbook_path --extra-vars "host_list=$master_host_list main_dir=$main_dir dir_owner=$dir_owner dir_group=$dir_group is_reload=$is_reload build_id=`echo ${CI_COMMIT_SHA:0:8}` tgzfile_path=$tgzfile_path softlink_path=$softlink_path"
+  only:
+    - master
+  when: manual
+  tags:
+    - pro_runner_wechat
