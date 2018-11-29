@@ -1,6 +1,6 @@
 # sun
 
-> yunzhidao-vue
+> sun-vue
 
 ## Build Setup
 
